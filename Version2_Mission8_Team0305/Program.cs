@@ -1,7 +1,13 @@
+using Mission08_Team03_05.Models;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+// Db connection
+builder.Services.AddDbContext<TaskContext>(options =>
+    options.UseSqlite(builder.Configuration.GetConnectionString("TaskDb")));
 
 var app = builder.Build();
 
