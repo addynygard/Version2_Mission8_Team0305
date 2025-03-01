@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Version2_Mission8_Team0305.Models;  // Make sure to import the namespace for Task
 
 namespace Version2_Mission8_Team0305.Models
 {
@@ -8,6 +7,7 @@ namespace Version2_Mission8_Team0305.Models
         public TaskContext(DbContextOptions<TaskContext> options) : base(options) { }
 
         public DbSet<aTask> Tasks { get; set; }
+        public DbSet<Category> Categories { get; set; } // ✅ Ensure this line is present
         
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

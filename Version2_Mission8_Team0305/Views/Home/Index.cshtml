@@ -1,8 +1,65 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model IEnumerable<Version2_Mission8_Team0305.Models.ToDoTask>
+
+@{
+    ViewData["Title"] = "Task Quadrants";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<h2 class="text-center">Task Quadrants</h2>
+
+<div class="container-fluid">
+    <div class="row">
+        <!-- Loop through each of the four quadrants -->
+        @foreach (var quadrant in new[]
+                      {
+                          new { Title = "Quadrant I: Important / Urgent", Tasks = Model.Where(t => t.Quadrant == "Quadrant I" && !t.Completed) },
+                          new { Title = "Quadrant II: Important / Not Urgent", Tasks = Model.Where(t => t.Quadrant == "Quadrant II" && !t.Completed) },
+                          new { Title = "Quadrant III: Not Important / Urgent", Tasks = Model.Where(t => t.Quadrant == "Quadrant III" && !t.Completed) },
+                          new { Title = "Quadrant IV: Not Important / Not Urgent", Tasks = Model.Where(t => t.Quadrant == "Quadrant IV" && !t.Completed) }
+                      })
+        {
+            <div class="col-lg-6 col-md-6 col-sm-12 quadrant-container">
+                <h4 class="quadrant-title">@quadrant.Title</h4>
+                <div class="quadrant-content">
+                    <table class="table table-bordered table-hover">
+                        <thead class="table-dark">
+                        <tr>
+                            <th class="fit-column">Task</th>
+                            <th class="fit-column">Due Date</th>
+                            <th class="fit-column">Category</th>
+                            <th class="fit-column">Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach (var task in quadrant.Tasks)
+                        {
+                            <tr>
+                                <!-- Use the correct property names from ToDoTask model -->
+                                <td>@task.TaskItem</td>
+                                <td>@(task.DueDate?.ToShortDateString() ?? "No Due Date")</td>
+                                <td>@task.Category</td>
+                                <td>
+                                    <a asp-action="Edit" asp-route-id="@task.TaskId" class="btn btn-sm btn-primary">Edit</a>
+                                    <form asp-action="Delete" method="post" style="display:inline;">
+                                        <input type="hidden" name="id" value="@task.TaskId" />
+                                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        }
+    </div>
+
+    <div class="text-center mt-4">
+        <a asp-action="Create" class="btn btn-lg btn-success">+ Add Task</a>
+    </div>
 </div>
+
+<style>
+    .quadrant-container {
+        padding: 20px;
+    }
+</style>
