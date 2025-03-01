@@ -2,10 +2,10 @@
 
 namespace Version2_Mission8_Team0305.Models
 {
-    public class Task
+    public class ToDoTask  // ✅ Rename Task → ToDoTask
     {
         [Key]
-        public int TaskId { get; set; }  // Primary key
+        public int TaskId { get; set; }  // ✅ Rename Id property if needed
 
         [Required]
         public string TaskItem { get; set; }
