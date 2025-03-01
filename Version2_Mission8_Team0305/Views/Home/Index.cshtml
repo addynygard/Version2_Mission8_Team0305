@@ -1,32 +1,25 @@
-﻿@model IEnumerable<ToDoTask>
-@inject Version2_Mission8_Team0305.Data.ApplicationDbContext _context
+﻿@model IEnumerable<Version2_Mission8_Team0305.Models.ToDoTask>
 
-<!-- This is the Task Index view. It displays tasks in four quadrants based on their importance and urgency. Users can view, edit, and delete tasks from each quadrant. -->
 @{
     ViewData["Title"] = "Task Quadrants";
-    var categories = _context.Categories.ToList();
 }
 
-<!-- Page Heading -->
 <h2 class="text-center">Task Quadrants</h2>
 
 <div class="container-fluid">
     <div class="row">
         <!-- Loop through each of the four quadrants -->
-        <!-- This is the Task Index view. It displays tasks in four quadrants based on their importance and urgency. Users can view, edit, and delete tasks from each quadrant. -->
         @foreach (var quadrant in new[]
-                  {
-                      new { Title = "Quadrant I: Important / Urgent", Tasks = Model.Where(t => t.Quadrant == Quadrant.ImportantUrgent && !t.Completed) },
-                      new { Title = "Quadrant II: Important / Not Urgent", Tasks = Model.Where(t => t.Quadrant == Quadrant.ImportantNotUrgent && !t.Completed) },
-                      new { Title = "Quadrant III: Not Important / Urgent", Tasks = Model.Where(t => t.Quadrant == Quadrant.NotImportantUrgent && !t.Completed) },
-                      new { Title = "Quadrant IV: Not Important / Not Urgent", Tasks = Model.Where(t => t.Quadrant == Quadrant.NotImportantNotUrgent && !t.Completed) }
-                  })
+                      {
+                          new { Title = "Quadrant I: Important / Urgent", Tasks = Model.Where(t => t.Quadrant == "Quadrant I" && !t.Completed) },
+                          new { Title = "Quadrant II: Important / Not Urgent", Tasks = Model.Where(t => t.Quadrant == "Quadrant II" && !t.Completed) },
+                          new { Title = "Quadrant III: Not Important / Urgent", Tasks = Model.Where(t => t.Quadrant == "Quadrant III" && !t.Completed) },
+                          new { Title = "Quadrant IV: Not Important / Not Urgent", Tasks = Model.Where(t => t.Quadrant == "Quadrant IV" && !t.Completed) }
+                      })
         {
             <div class="col-lg-6 col-md-6 col-sm-12 quadrant-container">
-                <!-- Display the title of the current quadrant -->
                 <h4 class="quadrant-title">@quadrant.Title</h4>
                 <div class="quadrant-content">
-                    <!-- Display the tasks in a table format -->
                     <table class="table table-bordered table-hover">
                         <thead class="table-dark">
                         <tr>
@@ -37,28 +30,17 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <!-- For each task in the quadrant, display the task name, due date, category, and actions (edit and delete). -->
-                        <!-- Loop through each task in the current quadrant -->
                         @foreach (var task in quadrant.Tasks)
                         {
                             <tr>
-                                <!-- Display the task name -->
-                                <td>@task.Name</td>
-
-                                <!-- Display the due date or "No Due Date" if not set -->
+                                <!-- Use the correct property names from ToDoTask model -->
+                                <td>@task.TaskItem</td>
                                 <td>@(task.DueDate?.ToShortDateString() ?? "No Due Date")</td>
-
-                                <!-- Display the category name if available -->
-                                <td>@task.Category?.Name</td>
-
-                                <!-- Display action buttons for editing and deleting the task -->
+                                <td>@task.Category</td>
                                 <td>
-                                    <a asp-action="Edit" asp-route-id="@task.Id" class="btn btn-sm btn-primary">Edit</a>
-
-                                    <!-- Delete form for the task -->
+                                    <a asp-action="Edit" asp-route-id="@task.TaskId" class="btn btn-sm btn-primary">Edit</a>
                                     <form asp-action="Delete" method="post" style="display:inline;">
-                                        <input type="hidden" name="id" value="@task.Id"/>
-                                        <!-- Delete button -->
+                                        <input type="hidden" name="id" value="@task.TaskId" />
                                         <button type="submit" class="btn btn-sm btn-danger">Delete</button>
                                     </form>
                                 </td>
@@ -71,7 +53,6 @@
         }
     </div>
 
-    <!-- Add Task Button -->
     <div class="text-center mt-4">
         <a asp-action="Create" class="btn btn-lg btn-success">+ Add Task</a>
     </div>
