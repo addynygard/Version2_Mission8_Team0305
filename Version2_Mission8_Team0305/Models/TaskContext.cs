@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 
-namespace Mission08_Team03_05.Models
+namespace Version2_Mission8_Team0305.Models
 {
     public class TaskContext : DbContext
     {

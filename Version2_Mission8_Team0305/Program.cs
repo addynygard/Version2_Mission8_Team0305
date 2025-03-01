@@ -1,4 +1,6 @@
-using Mission08_Team03_05.Models;
+using Microsoft.EntityFrameworkCore;
+using Version2_Mission8_Team0305.Models;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
