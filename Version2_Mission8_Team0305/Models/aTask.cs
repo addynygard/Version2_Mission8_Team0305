@@ -2,8 +2,10 @@
 
 namespace Version2_Mission8_Team0305.Models
 {
-    public class Task
+    public class aTask
     {
+        internal int Id;
+
         [Key]
         public int TaskId { get; set; }  // Primary key
 

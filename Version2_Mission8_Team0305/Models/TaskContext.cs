@@ -7,11 +7,12 @@ namespace Version2_Mission8_Team0305.Models
     {
         public TaskContext(DbContextOptions<TaskContext> options) : base(options) { }
 
-        public DbSet<Task> Tasks { get; set; }
+        public DbSet<aTask> Tasks { get; set; }
+        
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Task>()
+            modelBuilder.Entity<aTask>()
                 .HasKey(t => t.TaskId); // Ensures TaskId is the primary key
         }
     }

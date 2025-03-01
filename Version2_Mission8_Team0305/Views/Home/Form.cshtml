@@ -1,4 +1,4 @@
-﻿@model Version2_Mission08_Team03_05.Models.Task
+﻿@model Version2_Mission8_Team0305.Models.aTask
 
 <h1 class="text-center my-4">Add / Edit Task</h1>
 
@@ -38,13 +38,24 @@
         <label asp-for="Category" class="form-label">Category</label>
         <select asp-for="Category" class="form-select" required>
             <option disabled selected>Select a Category</option>
-            @foreach (var category in ViewBag.Categories)
+            @foreach (var category in (List<string>)ViewData["Categories"])
             {
-                <option value="@category.CategoryName">@category.CategoryName</option>
+                <option value="@category">@category</option>
             }
         </select>
         <span asp-validation-for="Category" class="text-danger"></span>
     </div>
+    @* <div class="mb-3"> *@
+    @*     <label asp-for="Category" class="form-label">Category</label> *@
+    @*     <select asp-for="Category" class="form-select" required> *@
+    @*         <option disabled selected>Select a Category</option> *@
+    @*         @foreach (var category in ViewBag.Categories) *@
+    @*         { *@
+    @*             <option value="@category.CategoryName">@category.CategoryName</option> *@
+    @*         } *@
+    @*     </select> *@
+    @*     <span asp-validation-for="Category" class="text-danger"></span> *@
+    @* </div> *@
 
     <!-- Completed Checkbox -->
     <div class="form-check mb-3">
