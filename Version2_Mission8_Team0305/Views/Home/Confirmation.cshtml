@@ -1,0 +1,13 @@
+﻿@model Version2_Mission08_Team0305.Models.Task
+
+@{
+    ViewData["Title"] = "Confirmation";
+}
+
+<div class="container text-center my-5">
+    <h2 class="display-4 text-success">Submission was received. Thank you!</h2>
+
+    <p class="lead mt-3">Your task "<strong>@Model.TaskItem</strong>" has been successfully added.</p>
+
+    <a href="@Url.Action("Index", "Home")" class="btn btn-primary btn-lg mt-4">Back to Home Page</a>
+</div>
