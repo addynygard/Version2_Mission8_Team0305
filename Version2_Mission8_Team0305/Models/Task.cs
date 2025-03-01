@@ -1,11 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Mission08_Team03_05.Models
+namespace Version2_Mission8_Team0305.Models
 {
     public class Task
     {
         [Key]
-        public int Id { get; set; }
+        public int TaskId { get; set; }  // Primary key
 
         [Required]
         public string TaskItem { get; set; }
@@ -19,6 +19,5 @@ namespace Mission08_Team03_05.Models
         public string Category { get; set; }
 
         public bool Completed { get; set; }
-
     }
 }
