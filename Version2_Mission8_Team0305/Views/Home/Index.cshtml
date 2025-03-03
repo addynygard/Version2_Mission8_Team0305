@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Version2_Mission8_Team0305.Models.ToDoTask>
+﻿@model IEnumerable<Version2_Mission8_Team0305.Models.aTask>
 
 @{
     ViewData["Title"] = "Task Quadrants";
@@ -33,7 +33,7 @@
                         @foreach (var task in quadrant.Tasks)
                         {
                             <tr>
-                                <!-- Use the correct property names from ToDoTask model -->
+                                <!-- Use the correct property names from aTask model -->
                                 <td>@task.TaskItem</td>
                                 <td>@(task.DueDate?.ToShortDateString() ?? "No Due Date")</td>
                                 <td>@task.Category</td>
