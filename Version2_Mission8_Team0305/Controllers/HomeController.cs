@@ -10,12 +10,15 @@ namespace Version2_Mission8_Team0305.Controllers
 {
     public class HomeController : Controller
     {
+
         private readonly ITaskRepository _taskRepository;
 
         public HomeController(ITaskRepository taskRepository)
         {
             _taskRepository = taskRepository;
         }
+
+
 
         [HttpGet]
         public IActionResult Form()
@@ -35,18 +38,33 @@ namespace Version2_Mission8_Team0305.Controllers
         //}
         //[HttpPost]
 
+        //[HttpPost]
+        //public IActionResult Form(aTask response)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        _taskRepository.Tasks.Add(response);
+        //        _taskRepository.SaveChanges();
+        //        return RedirectToAction("Index"); // Redirect to task list after submission
+        //    }
+        //    var categories = new List<string> { "Home", "School", "Work", "Church" };
+        //    ViewData["Categories"] = categories;
+        //    return View(response); // If invalid, return form with errors
+        //}
+
         [HttpPost]
         public IActionResult Form(aTask response)
         {
             if (ModelState.IsValid)
             {
-                _context.Tasks.Add(response);
-                _context.SaveChanges();
-                return RedirectToAction("Index"); // Redirect to task list after submission
+                _taskRepository.AddTask(response); // ✅ Use repository method instead of accessing "Tasks"
+                _taskRepository.Save(); // ✅ Ensure changes are saved to the database
+                return RedirectToAction("Index");
             }
-            var categories = new List<string> { "Home", "School", "Work", "Church" };
+
+            var categories = _taskRepository.GetCategories(); // ✅ Get categories from repository
             ViewData["Categories"] = categories;
-            return View(response); // If invalid, return form with errors
+            return View(response);
         }
         //public IActionResult Form(aTask response)
         //{
@@ -61,7 +79,8 @@ namespace Version2_Mission8_Team0305.Controllers
         [HttpGet]
         public IActionResult Edit(int id)
         {
-            var recordToEdit = _context.Tasks.FirstOrDefault(x => x.Id == id);
+            //var recordToEdit = _taskRepository.Tasks.FirstOrDefault(x => x.Id == id);
+            var recordToEdit = _taskRepository.GetTaskById(id); // ✅ Use repository method
             if (recordToEdit == null)
             {
                 return NotFound(); // Return 404 if task not found
@@ -73,8 +92,10 @@ namespace Version2_Mission8_Team0305.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Update(updatedInfo);
-                _context.SaveChanges();
+                //_taskRepository.Update(updatedInfo);
+                _taskRepository.UpdateTask(updatedInfo);
+
+                _taskRepository.Save();
                 return RedirectToAction("Index");
             }
             return View("Form", updatedInfo); // Return form if validation fails
@@ -82,7 +103,8 @@ namespace Version2_Mission8_Team0305.Controllers
         [HttpGet]
         public IActionResult Confirmation(int id)
         {
-            var task = _context.Tasks.Find(id);
+            //var task = _taskRepository.Tasks.Find(id);
+            var task = _taskRepository.GetTaskById(id); // Use the GetTaskById method from the repository
             if (task == null)
             {
                 return NotFound();
@@ -104,13 +126,13 @@ namespace Version2_Mission8_Team0305.Controllers
         public IActionResult Create()
         {
             PrepareCategoryDropdown();
-            return View("Form", new ToDoTask());
+            return View("Form", new aTask());
         }
 
         // 📌 Create a new task - Submit (POST)
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(ToDoTask task)
+        public IActionResult Create(aTask task)
         {
             if (!ModelState.IsValid)
             {
@@ -124,49 +146,9 @@ namespace Version2_Mission8_Team0305.Controllers
             return RedirectToAction("Index");
         }
 
-        // 📌 Edit an existing task (GET)
-        [HttpGet]
-        public IActionResult Edit(int id)
-        {
-            var task = _taskRepository.GetTaskById(id);
-            if (task == null)
-            {
-                return NotFound();
-            }
+        
 
-            PrepareCategoryDropdown();
-            return View("Form", task);
-        }
-
-        // 📌 Edit an existing task (POST)
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, ToDoTask task)
-        {
-            if (!ModelState.IsValid)
-            {
-                PrepareCategoryDropdown();
-                return View("Form", task);
-            }
-
-            var existingTask = _taskRepository.GetTaskById(id);
-            if (existingTask == null)
-            {
-                return NotFound();
-            }
-
-            // Update the existing task properties
-            existingTask.TaskItem = task.TaskItem;
-            existingTask.DueDate = task.DueDate;
-            existingTask.Category = task.Category;
-            existingTask.Quadrant = task.Quadrant;
-            existingTask.Completed = task.Completed;
-
-            _taskRepository.UpdateTask(existingTask);
-            _taskRepository.Save();
-
-            return RedirectToAction("Index");
-        }
+        
 
         // 📌 Delete a task (POST)
         [HttpPost]
